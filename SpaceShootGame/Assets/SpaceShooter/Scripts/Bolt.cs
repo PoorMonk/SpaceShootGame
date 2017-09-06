@@ -25,7 +25,10 @@ public class Bolt : MonoBehaviour {
     void FixedUpdate()
     {
         m_Rigidbody.velocity = m_direction * m_speed;
-
+        if(m_Rigidbody.position.z < -5.0f)
+        {
+            Destroy(gameObject);
+        }
         //m_Transform.localToWorldMatrix();
     }
 }

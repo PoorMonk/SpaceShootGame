@@ -6,6 +6,7 @@ public class GameControllor : MonoBehaviour {
 
     public Vector3 m_PlanetPos;
     public GameObject[] m_PlanetObjects;
+    public GameObject m_enemy;
 
     public float startWait = 2.0f;
     public float spawnWait = 1.0f;
@@ -14,6 +15,8 @@ public class GameControllor : MonoBehaviour {
     public int numPerWave = 10;
 
     private bool m_GameOver = false;
+
+    //private enemyController m_enemyController;
 
     // Use this for initialization
     void Start () {
@@ -38,6 +41,10 @@ public class GameControllor : MonoBehaviour {
         {
             for (int i = 0; i < numPerWave; ++i)
             {
+                if(0 == i % 3)
+                {
+                    CreateEnemy();
+                }
                 if (m_GameOver)
                 {
                     break;
@@ -45,6 +52,7 @@ public class GameControllor : MonoBehaviour {
                 Spawn();
                 yield return new WaitForSeconds(spawnWait);
             }
+            
             yield return new WaitForSeconds(deltaWait);
 
             if(m_GameOver)
@@ -63,6 +71,16 @@ public class GameControllor : MonoBehaviour {
         GameObject go = m_PlanetObjects[Random.Range(0, m_PlanetObjects.Length)];
         Vector3 vecPos = new Vector3(Random.Range(-m_PlanetPos.x, m_PlanetPos.x), m_PlanetPos.y, m_PlanetPos.z);
         Instantiate(go, vecPos, Quaternion.identity);
+    }
+
+    /// <summary>
+    /// 创建敌机
+    /// </summary>
+    void CreateEnemy()
+    {
+        Vector3 vecPos = new Vector3(Random.Range(-m_PlanetPos.x, m_PlanetPos.x), m_PlanetPos.y, m_PlanetPos.z);
+        Instantiate(m_enemy, vecPos, Quaternion.identity);
+        //m_enemy.GetComponent<enemyController>().CreateBulletInterface();
     }
 
     /// <summary>

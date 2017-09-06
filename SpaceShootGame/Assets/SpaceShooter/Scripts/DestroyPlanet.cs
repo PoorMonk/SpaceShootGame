@@ -13,7 +13,7 @@ public class DestroyPlanet : MonoBehaviour {
     
 	// Use this for initialization
 	void Start () {
-        Destroy(gameObject, 10.0f);
+        Destroy(gameObject, 8.0f);
         m_GameController = GameObject.FindWithTag("GameController").GetComponent<GameControllor>();
         m_UIController = GameObject.Find("UI").GetComponent<UIController>();
     }
@@ -29,7 +29,7 @@ public class DestroyPlanet : MonoBehaviour {
         //Debug.Log("name:" + coll.gameObject.name);
         if(coll.gameObject.tag != "Boundary")
         {
-            if(coll.gameObject.tag != "Planet")
+            if(coll.gameObject.tag != "Planet" && coll.gameObject.tag != "enemy" && coll.gameObject.tag != "enemyBullet")
             {
                 if (coll.gameObject.tag == "Player")
                 {
@@ -40,13 +40,12 @@ public class DestroyPlanet : MonoBehaviour {
                     m_GameController.GameOver();
                 }
                 else
-                {
-                    Destroy(coll.gameObject);
+                {                 
                     Destroy(gameObject);
                     Instantiate(m_explosionPlanet, transform.position, Quaternion.identity);
                     m_UIController.AddScore(m_score);
                 }
-                
+                Destroy(coll.gameObject);
             }      
         }
     }

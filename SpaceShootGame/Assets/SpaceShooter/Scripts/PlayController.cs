@@ -19,13 +19,19 @@ public class PlayController : MonoBehaviour {
     private Rigidbody m_Rigidbody;
     private Transform m_Transform;
     private AudioSource m_AudioSource;
+    private GameControllor m_GameController;
+    private UIController m_UIController;
 
+    public GameObject m_explosionPlayer;
     public GameObject m_bolt;
 
     void Start()
     {
+        Debug.Log("Start");
         m_Rigidbody = gameObject.GetComponent<Rigidbody>();
         m_AudioSource = gameObject.GetComponent<AudioSource>();
+        m_GameController = GameObject.FindWithTag("GameController").GetComponent<GameControllor>();
+        m_UIController = GameObject.Find("UI").GetComponent<UIController>();
     }
 
     //public float speed = 10.0F;
@@ -34,8 +40,9 @@ public class PlayController : MonoBehaviour {
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            Transform TLauchPos = GameObject.Find("LauchPos").gameObject.GetComponent<Transform>();
-            GameObject.Instantiate(m_bolt, TLauchPos.position, Quaternion.identity);
+            Vector3 TLauchPos = GameObject.Find("LauchPos").gameObject.GetComponent<Transform>().position;
+            //Debug.Log("bullet:" + TLauchPos.position.x + "," + TLauchPos.position.y + "," + TLauchPos.position.z);
+            Instantiate(m_bolt, TLauchPos, Quaternion.identity);
             m_AudioSource.Play();
         }
     }
@@ -57,4 +64,15 @@ public class PlayController : MonoBehaviour {
             Mathf.Clamp(m_Rigidbody.position.z, m_Boundary.zMin, m_Boundary.zMax));
     }
 
+    void OnTriggerEnter(Collider coll)
+    {
+        if (coll.gameObject.tag == "enemyBullet")
+        {
+            Destroy(gameObject);
+            Destroy(coll.gameObject);
+            Instantiate(m_explosionPlayer, transform.position, Quaternion.identity);
+            m_GameController.GameOver();
+            m_UIController.ChangeGameStatus(UIController.GAMESTATUS.GAMEEND);
+        }
+    }
 }

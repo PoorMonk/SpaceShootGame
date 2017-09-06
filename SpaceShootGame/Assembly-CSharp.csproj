@@ -55,6 +55,7 @@
      <Compile Include="Assets\SpaceShooter\Scripts\DestrouBolt.cs" />
      <Compile Include="Assets\SpaceShooter\Scripts\DestroyExplosion.cs" />
      <Compile Include="Assets\SpaceShooter\Scripts\DestroyPlanet.cs" />
+     <Compile Include="Assets\SpaceShooter\Scripts\enemyController.cs" />
      <Compile Include="Assets\SpaceShooter\Scripts\GameControllor.cs" />
      <Compile Include="Assets\SpaceShooter\Scripts\PlanetRotation.cs" />
      <Compile Include="Assets\SpaceShooter\Scripts\PlayController.cs" />

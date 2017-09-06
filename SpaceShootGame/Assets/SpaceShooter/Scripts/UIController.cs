@@ -14,19 +14,25 @@ public class UIController : MonoBehaviour {
 
     private GameObject m_GameStart;
     private GameObject m_GameOver;
-    private GameObject m_Player;
+    private GameObject m_GameWin;
+    private GameObject m_GameLose;
+    public GameObject m_Player;
 
     private int m_score = 0;
+    public int m_targetScore = 1000;
     private GUIText m_GUITextSocre;
 
     private GameControllor m_GameController;
-    
 
+    private bool m_isWin = false;
     // Use this for initialization
     void Start () {
         m_GameStart = GameObject.Find("GameStart");
         m_GameOver = GameObject.Find("GameOver");
-        m_Player = GameObject.Find("player");
+        m_GameWin = GameObject.Find("GamePass");
+        m_GameLose = GameObject.Find("GameFailed");
+        //m_Player = GameObject.Find("player");
+        //m_Player = null;
 
         m_GameController = GameObject.FindWithTag("GameController").GetComponent<GameControllor>();
         m_GUITextSocre = GameObject.Find("GameScore").gameObject.GetComponent<GUIText>();
@@ -54,16 +60,41 @@ public class UIController : MonoBehaviour {
 
         if (m_GameStatus == GAMESTATUS.GAMESTART)
         {
+            m_isWin = false;
             m_GameOver.SetActive(false);
-            m_Player.SetActive(true);
+            //m_Player.SetActive(true);
             m_GameController.GameStart();
+            CreatePlayer();
+            ShowScore();
         }
         else if (m_GameStatus == GAMESTATUS.GAMEEND)
         {
-            m_Player.SetActive(false);
+            //m_Player.SetActive(false);
             m_GameOver.SetActive(true);
             m_score = 0;
+            GameObject go = GameObject.FindWithTag("Player");
+            if(go != null)
+            {
+               Destroy(go.gameObject);
+            }
+            
         }
+
+        if(m_isWin)
+        {
+            m_GameWin.SetActive(true);
+            m_GameLose.SetActive(false);
+        }
+        else
+        {
+            m_GameWin.SetActive(false);
+            m_GameLose.SetActive(true);
+        }
+    }
+
+    void CreatePlayer()
+    {
+        Instantiate(m_Player, Vector3.zero, Quaternion.identity);            
     }
 
     /// <summary>
@@ -74,6 +105,13 @@ public class UIController : MonoBehaviour {
     {
         m_score += iScore;
         ShowScore();
+
+        if(m_targetScore < m_score)
+        {
+            m_isWin = true;
+            ChangeGameStatus(GAMESTATUS.GAMEEND);
+            m_GameController.GameOver();          
+        }
     }
 
     /// <summary>
