@@ -38,7 +38,7 @@ public class PlayController : MonoBehaviour {
     //public float rotationSpeed = 100.0F;
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(/*Input.GetKeyDown(KeyCode.Space)*/Input.GetMouseButtonDown(0))
         {
             Vector3 TLauchPos = GameObject.Find("LauchPos").gameObject.GetComponent<Transform>().position;
             //Debug.Log("bullet:" + TLauchPos.position.x + "," + TLauchPos.position.y + "," + TLauchPos.position.z);
@@ -47,6 +47,7 @@ public class PlayController : MonoBehaviour {
         }
     }
 
+    
     
     void FixedUpdate()
     {
